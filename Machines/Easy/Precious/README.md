@@ -137,7 +137,7 @@ so we'll fire up our local server
 and try it again 
 `http://<your ip>:8000/`
 
-//to know your ip type `ifconfig`
+//to know your ip type `ifconfig` and you'll find it here
 
 ![image](https://user-images.githubusercontent.com/99322823/224216043-4e42c23e-338e-4a07-9b0d-d6ecd6acec23.png)
 
