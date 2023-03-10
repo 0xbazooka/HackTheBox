@@ -147,12 +147,18 @@ and try it again
 
 it downloaded the pdf
 
-examining it with `exiftool`:
+how it looks:
+
+![image](https://user-images.githubusercontent.com/99322823/224413307-d011c401-5923-47c2-9f45-ebf20a1af275.png)
+
+nothing out of the norm
+let's examine   it with `exiftool`:
 
 ![image](https://user-images.githubusercontent.com/99322823/224216511-f91436b8-5f29-432e-90ee-e475fec1c342.png)
 
  we find it's created with pdfkit
-
+googling 'pdfkit v0.8.6 exploit' we find CVE-2022-25765 whcih basically
+https://security.snyk.io/vuln/SNYK-RUBY-PDFKIT-2869795
 
 
 
