@@ -76,12 +76,83 @@ but it didn't make sense why its value was Ruby in the nikto scan, so I research
 
 I figured the server probably runs Ruby, so I kept it in mind.
 
-tried fuzzing with gobuster and ffuf and nothing useful came back
+# Fuzzing 
+we'll use both `gobuster` and `ffuf`
+
+## Gobuster
+```
+gobuster dir -u http://$ip:80/ -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -mc 200
+===============================================================
+Gobuster v3.4
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://10.10.11.189:80/
+[+] Method:                  c
+[+] Threads:                 10
+[+] Wordlist:                /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.4
+[+] Timeout:                 10s
+===============================================================
+2023/03/09 21:44:49 Starting gobuster in directory enumeration mode
+===============================================================
+
+Error: the server returns a status code that matches the provided options for non existing urls. http://10.10.11.189:80/693bdcf7-774c-4b09-afba-d9b4a88456e6 => 400 (Length: 157). To continue please exclude the status code or the length
+```
+
+nothing.
+## Ffuf
+```ffuf -u http://$ip/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories-lowercase.txt```
+
+same with ffuf
+
+# Browsing the Website
+port 80 redirects us to precious.htb 
+
+Let's add that in /etc/hosts file
+
+```
+`sudo nano /etc/hosts`
+
+127.0.0.1       localhost
+127.0.1.1       kali
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+
+10.10.11.189 precious.htb
+```
+
+![image](https://user-images.githubusercontent.com/99322823/224211714-273c5c37-fb19-444f-9cb6-5bc831b353d2.png)
+
+trying `http://google.com/`
+![image](https://user-images.githubusercontent.com/99322823/224212183-39999715-bc4f-4744-a44a-84b94ec24a84.png)
+
+so we'll fire up our local server
+
+![image](https://user-images.githubusercontent.com/99322823/224215304-56acb3e5-8cbb-48ba-93a9-7997cef82afd.png)
+
+and try it again 
+`http://<your ip>:8000/`
+
+//to know your ip type `ifconfig`
+
+![image](https://user-images.githubusercontent.com/99322823/224216043-4e42c23e-338e-4a07-9b0d-d6ecd6acec23.png)
+
+
+![image](https://user-images.githubusercontent.com/99322823/224215549-45f0f966-9b44-4bd6-a3f5-e97f20e1f1b9.png)
+
+
+it downloaded the pdf
+
+examining it with `exiftool`:
+
+![image](https://user-images.githubusercontent.com/99322823/224216511-f91436b8-5f29-432e-90ee-e475fec1c342.png)
+
+ we find it's created with pdfkit
 
 
 
-port 80 redirect us to precious.htb
-Let's quickly add that in /etc/hosts file
 
-
-we'll browse the site hosted on port 80, 
