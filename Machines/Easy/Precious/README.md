@@ -211,6 +211,7 @@ googling : **yaml.load exploit ruby**
 
 
 we find a repo with a payload exploiting the `yaml.load` function [here](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Insecure%20Deserialization/Ruby.md)
+and [here](https://staaldraad.github.io/post/2021-01-09-universal-rce-ruby-yaml-load-updated/?ref=the-random-adventure-that-is-life-ratil)
 
 
 ```
