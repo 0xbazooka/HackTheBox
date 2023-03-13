@@ -234,3 +234,12 @@ we find a repo with a payload exploiting the `yaml.load` function [here](https:/
              git_set: id
          method_id: :resolve
 ```
+
+![image](https://user-images.githubusercontent.com/99322823/224806047-7e7674b6-4095-499d-8cd3-818e82caf10c.png)
+
+![image](https://user-images.githubusercontent.com/99322823/224808584-9d1c66f5-1f56-4ee4-8a3f-46fd12fe6263.png)
+
+![image](https://user-images.githubusercontent.com/99322823/224808658-da3534ee-38e4-46c2-8154-ee954d0ab6cb.png)
+
+![image](https://user-images.githubusercontent.com/99322823/224808685-a2f58416-33b5-4cd7-b50c-a00ec5fa38b5.png)
+
