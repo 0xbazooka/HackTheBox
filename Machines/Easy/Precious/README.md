@@ -202,7 +202,7 @@ we got our first flag !
 
 ![image](https://user-images.githubusercontent.com/99322823/224594774-224f228b-4b3e-486e-aeba-998605151d87.png)
 
-![image](https://user-images.githubusercontent.com/99322823/224594848-1520b416-aba6-439e-a8b6-2fccee89da7d.png)
+
 
 so it turned it's really using ruby
 googling : **yaml.load exploit ruby**
